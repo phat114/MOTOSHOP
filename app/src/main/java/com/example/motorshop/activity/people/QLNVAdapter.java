@@ -6,18 +6,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
+
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.motorshop.activity.people.QLNVActivity;
+
 import com.example.motorshop.activity.R;
+import com.example.motorshop.datasrc.BoPhan;
 import com.example.motorshop.datasrc.NhanVien;
 import com.example.motorshop.db.DBManager;
 
@@ -31,7 +30,8 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
     int resource;
     List<NhanVien> data;
     RecyclerView rvDataNV;
-    DBManager dataNV;
+    DBManager db = new DBManager(context);
+
     public QLNVAdapter(Context context, int resource, List<NhanVien> data) {
         this.context = context;
         this.resource = resource;
@@ -43,6 +43,7 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_nhanvien, parent, false);
+
         return new ViewHolder(view);
 
     }
@@ -55,6 +56,7 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
             holder.tvdtSDT.setText(NV.getSdt());
             holder.tvdtBP.setText(NV.getMaBP());
         }
+        NhanVien NV = this.data.get(position);
     }
 
     @Override
@@ -70,16 +72,17 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
             tvdtHoTen = itemView.findViewById(R.id.tvdtHoTen);
             tvdtSDT = itemView.findViewById(R.id.tvdtSDT);
             tvdtBP = itemView.findViewById(R.id.tvdtBP);
+
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    showPopUpNV();
+                    showPopUpBP();
                     return true;
                 }
             });
         }
 
-        private void showPopUpNV() {
+        private void showPopUpBP() {
             PopupMenu popupMenu = new PopupMenu(context, itemView);
             popupMenu.getMenuInflater().inflate(R.menu.menu_nhanvien, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -87,11 +90,11 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.mnThemNV:
-                            Intent intentThemNV = new Intent(context,Them_NVActivity.class);
+                            Intent intentThemNV = new Intent(context, Them_NVActivity.class);
                             context.startActivity(intentThemNV);
-                             break;
+                            break;
                         case R.id.mnSuaNV:
-                            Intent intentSuaNV = new Intent(context,Sua_NVActivity.class);
+                            Intent intentSuaNV = new Intent(context, Sua_NVActivity.class);
                             context.startActivity(intentSuaNV);
                             break;
                         case R.id.mnXoaNV:
@@ -103,6 +106,7 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
             });
             popupMenu.show();
         }
+
 
     }
 

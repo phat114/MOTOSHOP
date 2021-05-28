@@ -28,7 +28,8 @@ public class DBManager extends SQLiteOpenHelper {
         ArrayList<String> createTables = new ArrayList<>();
         createTables.add("CREATE TABLE IF NOT EXISTS BOPHAN (MABP text PRIMARY KEY, TENBP text not null)");
         createTables.add("CREATE TABLE IF NOT EXISTS NHANVIEN(MANV text PRIMARY KEY, HOTEN text not null, SDT text not null, MABP text not null, CONSTRAINT FK_NHANVIEN_BOPHAN FOREIGN KEY (MABP) REFERENCES BOPHAN(MABP))");
-        createTables.add("CREATE TABLE IF NOT EXISTS KHACHHANG (CMND text PRIMARY KEY, HOTEN text not null, DIACHI text not null, SDT text null)");
+        createTables.add("CREATE TABLE IF NOT EXISTS KHACHHANG(CMND text PRIMARY KEY, HOTENKH text not null,DIACHIKH text not null,SDTKH text null)");
+        //createTables.add("CREATE TABLE IF NOT EXISTS KHACHHANG (CMND text PRIMARY KEY, HOTENKH text not null, DIACHIKH text not null, SDTKH text null)");
         createTables.add("CREATE TABLE IF NOT EXISTS NHACUNGCAP (MANCC text PRIMARY KEY, TENNCC text not null, DIACHI text not null, SDT text not null, EMAIL text null, LOGO int not null)");
         createTables.add("CREATE TABLE IF NOT EXISTS XE (MAXE text PRIMARY KEY, TENXE text not null, SOLUONG int not null, DONGIA int not null, HANBAOHANH int not null, HINHANH int not null, MANCC text not null, CONSTRAINT FK_XE_NHACUNGCAP FOREIGN KEY (MANCC) REFERENCES NHACUNGCAP(MANCC))");
         createTables.add("CREATE TABLE IF NOT EXISTS PHUTUNG (MAPT text PRIMARY KEY, TENPT text not null, SOLUONG int not null, DONGIA int not null, HANBAOHANH int not null, HINHANH int not null, MANCC text not null, CONSTRAINT FK_PHUTUNG_NHACUNGCAP FOREIGN KEY (MANCC) REFERENCES NHACUNGCAP(MANCC))");
@@ -82,7 +83,7 @@ public class DBManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("MABP", department.getMaBP());
         values.put("TENBP", department.getTenBP());
-        db.insert("BOPHAN", null, values);
+        db.insert("BoPhan", null, values);
         db.close();
         Log.d(TAG,"Insert DEPARTMENT: ");
     }
@@ -130,6 +131,29 @@ public class DBManager extends SQLiteOpenHelper {
         Log.d(TAG,"Load DEPARTMENT LIST: ");
     }
 
+    public ArrayList<BoPhan> loadAllDPList() {
+        ArrayList<BoPhan> data = new ArrayList<>();
+//        data.clear();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from BOPHAN";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                BoPhan boPhan = new BoPhan();
+                boPhan.setMaBP(cursor.getString(0));
+                boPhan.setTenBP(cursor.getString(1));
+                data.add(boPhan);
+            }while (cursor.moveToNext());
+        }
+        Log.d(TAG,"Load DP LIST: ");
+        return data;
+    }
+    public void createDP(){
+
+        insertDP(new BoPhan("BP02", "Sua chua"));
+        insertDP(new BoPhan("BP01", "Bao hanh"));
+        Log.d(TAG,"Insert Nhan Vien thanh cong");
+    }
 
     //NHAN VIEN (STAFF)
     public void insertST(NhanVien nhanVien){
@@ -144,7 +168,6 @@ public class DBManager extends SQLiteOpenHelper {
         Log.d(TAG,"Insert Nhan Vien");
     }
     public void create(){
-//        insertST(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
         insertST(new NhanVien("NV02", "Nguyen Thinh", "0123456789", "PT122"));
         Log.d(TAG,"Insert Nhan Vien thanh cong");
     }
@@ -184,7 +207,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public ArrayList<NhanVien> loadAllSTList() {
         ArrayList<NhanVien> data = new ArrayList<>();
-//        data.clear();
+
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from NHANVIEN";
         Cursor cursor = db.rawQuery(query,null);
@@ -203,13 +226,20 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     //KHACH HANG (CUSTOMER)
+
+    public void createCTM(){
+//        insertST(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
+        insertCTM(new KhachHang("1212121", "Nguyen Thinh", "0123456789", "01212"));
+        insertCTM(new KhachHang("1324234", "Nguyen Thinh Phat", "0123456789", "12131"));
+        Log.d(TAG,"Insert Khach hang thanh cong");
+    }
     public void insertCTM(KhachHang khachHang) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("CMND",khachHang.getCmnd());
-        values.put("HOTEN",khachHang.getHoTen());
-        values.put("EMAIL",khachHang.getDiaChi());
-        values.put("SDT",khachHang.getSdt());
+        values.put("HOTENKH",khachHang.getHoTen());
+        values.put("DIACHIKH",khachHang.getDiaChi());
+        values.put("SDTKH",khachHang.getSdt());
         db.insert("KhachHang",null,values);
         db.close();
         Log.d(TAG,"Insert Khach Hang");
@@ -217,9 +247,9 @@ public class DBManager extends SQLiteOpenHelper {
     public void updateCTM(KhachHang khachHang) {
         SQLiteDatabase db = getWritableDatabase();
         String sql = "Update KHACHHANG set ";
-        sql += "HOTEN"+khachHang.getHoTen()+"', ";
-        sql += "EMAIL"+khachHang.getDiaChi()+"', ";
-        sql += "SDT"+khachHang.getSdt()+"', ";
+        sql += "HOTENKH"+khachHang.getHoTen()+"', ";
+        sql += "DIACHIKH"+khachHang.getDiaChi()+"', ";
+        sql += "SDTKH"+khachHang.getSdt()+"', ";
         sql += "WHERE CMND = '"+khachHang.getCmnd()+"'";
         db.execSQL(sql);
     }
@@ -230,8 +260,9 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
         Log.d("data","Delete Khach Hang");
     }
-    public void loadCTMList(ArrayList<KhachHang> data) {
-        data.clear();
+
+    public ArrayList<KhachHang> loadAllCTMList() {
+        ArrayList<KhachHang> data = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from KHACHHANG";
         Cursor cursor = db.rawQuery(query,null);
@@ -242,8 +273,11 @@ public class DBManager extends SQLiteOpenHelper {
                 khachHang.setHoTen(cursor.getString(1));
                 khachHang.setDiaChi(cursor.getString(2));
                 khachHang.setSdt(cursor.getString(3));
+                data.add(khachHang);
             }while (cursor.moveToNext());
         }
+        Log.d(TAG,"Load CTM LIST: ");
+        return data;
     }
 
 

@@ -29,11 +29,11 @@ public class BoPhan {
         this.tenBP = tenBP;
     }
 
-    public ArrayList<BoPhan> initBoPhanDB(){
+    /*public ArrayList<BoPhan> initBoPhanDB(){
         ArrayList<BoPhan> list = new ArrayList<>();
         list.add(new BoPhan("BH", "Bán Hàng"));
         list.add(new BoPhan("BD", "Bảo Dưỡng"));
         list.add(new BoPhan("GD", "Giám Đốc"));
         return list;
-    }
+    }*/
 }

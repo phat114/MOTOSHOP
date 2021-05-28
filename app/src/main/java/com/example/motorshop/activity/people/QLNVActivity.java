@@ -22,13 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.motorshop.activity.R;
+import com.example.motorshop.activity.department.DepartmentActivity;
 import com.example.motorshop.datasrc.NhanVien;
 import com.example.motorshop.db.DBManager;
 
 import java.util.ArrayList;
 
 public class QLNVActivity extends AppCompatActivity {
-
+    NhanVien nhanVien;
     ArrayList<NhanVien> dataNV;
     RecyclerView rvDataNV;
     TextView tvdtHoTen, tvdtSDT, tvdtBP;
@@ -42,54 +43,31 @@ public class QLNVActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_nhanvien);
         setControl();
-//        setEvent();
-        db.create();
+        /*db.create();*/
         setEvent();
-//        load();
-    }//don hang -> phieu ->chituet
-
-
-    /*public void loadQLNV() {
-        new DBManager(QLNVActivity.this).loadSTList(dataNV);
-    }*/
-
-    /*public void load(){
-        dataNV = new ArrayList<>();
-        dataNV = db.loadAllSTList();
-        qlnvAdapter = new QLNVAdapter(this, R.layout.item_nhanvien, dataNV);
-        rvDataNV.setAdapter(qlnvAdapter);
-        qlnvAdapter.notifyDataSetChanged();
-    }*/
-
-    /*private void setEvent() {
-         dataNV = new ArrayList<>();
-        qlnvAdapter = new QLNVAdapter(this, R.layout.item_nhanvien, dataNV);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rvDataNV.setLayoutManager(mLayoutManager);
-        rvDataNV.setAdapter(qlnvAdapter);
-        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-
-    }*/
-    private void setEvent() {
-
-
-
+    }
+    public void loadQLNV(){
         dataNV = db.loadAllSTList();
         qlnvAdapter = new QLNVAdapter(this, R.layout.item_nhanvien, dataNV);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvDataNV.setLayoutManager(mLayoutManager);
         rvDataNV.setAdapter(qlnvAdapter);
-//        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-//        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-//        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-//        dataNV.add(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
+        }
 
-
+    public void deleteQLNV(NhanVien nhanVien){
+        this.nhanVien = nhanVien;
+        nhanVien.setMaNV(tvdtHoTen.getText().toString().trim());
+        nhanVien.setHoTen(tvdtHoTen.getText().toString().trim());
+        nhanVien.setSdt(tvdtSDT.getText().toString().trim());
+        nhanVien.setMaBP(tvdtBP.getText().toString().trim());
+        new DBManager(QLNVActivity.this).deleteST(nhanVien);
     }
 
+
+
+    private void setEvent() {
+        loadQLNV();
+    }
     private void setControl() {
         tvdtHoTen = findViewById(R.id.tvdtHoTen);
         tvdtSDT = findViewById(R.id.tvdtSDT);
@@ -123,6 +101,8 @@ public class QLNVActivity extends AppCompatActivity {
                 }
             }
         };
+
+
 }
 
 

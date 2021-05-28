@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.motorshop.activity.R;
 import com.example.motorshop.datasrc.BoPhan;
 import com.example.motorshop.datasrc.KhachHang;
+import com.example.motorshop.datasrc.NhanVien;
 import com.example.motorshop.db.DBManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ public class QLBPAdapter extends RecyclerView.Adapter<QLBPAdapter.ViewHolder> {
     int resource;
     List<BoPhan> data;
     RecyclerView rvDataBP;
-    DBManager dataBP;
+    DBManager db = new DBManager(context);
 
     public QLBPAdapter(Context context, int resource, List<BoPhan> data) {
         this.context = context;
@@ -38,7 +39,7 @@ public class QLBPAdapter extends RecyclerView.Adapter<QLBPAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_bophan, parent, false);
-        return new QLBPAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -48,11 +49,12 @@ public class QLBPAdapter extends RecyclerView.Adapter<QLBPAdapter.ViewHolder> {
             holder.tvdtMaBP.setText(BP.getMaBP());
             holder.tvdtTenBP.setText(BP.getTenBP());
         }
+        BoPhan BP = this.data.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.motorshop.activity.R;
+import com.example.motorshop.activity.department.DepartmentActivity;
 import com.example.motorshop.datasrc.BoPhan;
 import com.example.motorshop.datasrc.KhachHang;
 import com.example.motorshop.db.DBManager;
@@ -27,7 +28,7 @@ public class QLBPActivity extends AppCompatActivity {
     MenuItem mnThemBP, mnSuaBP, mnXoaBP;
     ImageButton ibQLKH1,ibQLNV1,ibQLBP1;
     QLBPAdapter qlbpAdapter;
-    DBManager dbBP;
+    DBManager db =new DBManager(this) ;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,29 +36,31 @@ public class QLBPActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bophan);
         setControl();
         setEvent();
-        loadQLBP();
+
     }
 
     public void loadQLBP() {
-        new DBManager(QLBPActivity.this).loadDPList(dataBP);
-    }
-
-    private void setEvent() {
-        dataBP = new ArrayList<>();
+        dataBP = db.loadAllDPList();
         qlbpAdapter = new QLBPAdapter(this, R.layout.item_bophan, dataBP);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvDataBP.setLayoutManager(mLayoutManager);
         rvDataBP.setAdapter(qlbpAdapter);
+        }
+
+    private void setEvent() {
+        loadQLBP();
     }
 
 
     private void setControl() {
         tvdtMaBP = findViewById(R.id.tvdtMaBP);
         tvdtTenBP = findViewById(R.id.tvdtTenBP);
+
         rvDataBP = findViewById(R.id.rvDataBP);
         mnThemBP = findViewById(R.id.mnThemBP);
         mnXoaBP = findViewById(R.id.mnXoaBP);
         mnSuaBP = findViewById(R.id.mnSuaBP);
+
         ibQLKH1 = findViewById(R.id.ibQLKH1);
         ibQLNV1 = findViewById(R.id.ibQLNV1);
         ibQLBP1 = findViewById(R.id.ibQLBP1);

@@ -26,7 +26,7 @@ public class QLKHAdapter extends RecyclerView.Adapter<QLKHAdapter.ViewHolder> {
     int resource;
     List<KhachHang> data;
     RecyclerView rvDataKH;
-    DBManager dataKH;
+    DBManager db = new DBManager(context);
 
     public QLKHAdapter(Context context, int resource, List<KhachHang> data) {
         this.context = context;
@@ -39,7 +39,7 @@ public class QLKHAdapter extends RecyclerView.Adapter<QLKHAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_khachhang, parent, false);
-        return new QLKHAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class QLKHAdapter extends RecyclerView.Adapter<QLKHAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

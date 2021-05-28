@@ -19,7 +19,7 @@
             android:gravity="left"
             android:textColor="#f000"
             android:textSize="15sp"
-            />
+         />
 
 
 
@@ -30,6 +30,8 @@
             android:id="@+id/tvdtTenBP"
             android:gravity="center_horizontal"
             android:textColor="#f000"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+
+           />
     </TableRow>
 </TableLayout>

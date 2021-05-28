@@ -27,27 +27,27 @@ public class QLKHActivity extends AppCompatActivity {
     MenuItem mnThemKH, mnSuaKH, mnXoaKH;
     ImageButton ibQLKH2,ibQLNV2,ibQLBP2;
     QLKHAdapter qlkhAdapter;
-    DBManager dbKH;
+    DBManager db = new DBManager(this);
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_khachhang);
         setControl();
+        db.createCTM();
         setEvent();
-        loadQLNV();
     }
 
-    public void loadQLNV() {
-        new DBManager(QLKHActivity.this).loadCTMList(dataKH);
-    }
-
-    private void setEvent() {
-        dataKH = new ArrayList<>();
+    public void loadQLKH(){
+        dataKH = db.loadAllCTMList();
         qlkhAdapter = new QLKHAdapter(this, R.layout.item_khachhang, dataKH);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvDataKH.setLayoutManager(mLayoutManager);
         rvDataKH.setAdapter(qlkhAdapter);
+    }
+
+    private void setEvent() {
+        loadQLKH();
 }
 
 
