@@ -1,6 +1,8 @@
 package com.example.motorshop.activity.people;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.motorshop.activity.R;
+import com.example.motorshop.activity.department.DepartmentActivity;
 import com.example.motorshop.datasrc.BoPhan;
 import com.example.motorshop.datasrc.NhanVien;
 import com.example.motorshop.db.DBManager;
@@ -23,16 +26,18 @@ import com.example.motorshop.db.DBManager;
 import org.jetbrains.annotations.NotNull;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
     Context context;
     int resource;
-    List<NhanVien> data;
+    ArrayList<NhanVien> data = new ArrayList<>();
     RecyclerView rvDataNV;
     DBManager db = new DBManager(context);
+    NhanVien nhanVien;
 
-    public QLNVAdapter(Context context, int resource, List<NhanVien> data) {
+    public QLNVAdapter(Context context, int resource, ArrayList<NhanVien> data) {
         this.context = context;
         this.resource = resource;
         this.data = data;
@@ -56,7 +61,6 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
             holder.tvdtSDT.setText(NV.getSdt());
             holder.tvdtBP.setText(NV.getMaBP());
         }
-        NhanVien NV = this.data.get(position);
     }
 
     @Override
@@ -98,7 +102,15 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
                             context.startActivity(intentSuaNV);
                             break;
                         case R.id.mnXoaNV:
-
+                            int pos = getAdapterPosition();
+                            System.out.println("data size: " + data.size());
+                            System.out.println("id: " + data.get(pos).getMaNV());
+                            DBManager db = new DBManager(context.getApplicationContext());
+                                    db.deleteST(data.get(pos).getMaNV());
+                            System.out.println("data size 2nd: " + data.size());
+//                            db.loadSTList(data);
+                            db.loadAllSTList();
+                            ((QLNVActivity)context).loadQLNV();
                             break;
                     }
                     return false;
@@ -106,6 +118,22 @@ public class QLNVAdapter extends RecyclerView.Adapter<QLNVAdapter.ViewHolder> {
             });
             popupMenu.show();
         }
+
+//        private void deleteNV(int pos) {
+//            new AlertDialog.Builder((QLNVActivity)context)
+//                    .setTitle("Xóa Nội Dung")
+//                    .setMessage("Bạn có muốn xóa nhân viên này không?")
+//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            data.get(pos).setHoTen(tvdtHoTen.getText().toString().trim());
+//                            data.get(pos).setSdt(tvdtSDT.getText().toString().trim());
+//                            data.get(pos).setMaBP(tvdtBP.getText().toString().trim());
+//                            db.deleteST(pos, (ArrayList<NhanVien>) data);
+//                            data.remove(pos);
+//                            }
+//                    });
+//        }
 
 
     }

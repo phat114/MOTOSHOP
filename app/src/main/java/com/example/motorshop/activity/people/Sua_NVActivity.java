@@ -25,6 +25,8 @@ public class Sua_NVActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sua_nv);
+        setControl();
+        setEvent();
     }
 
     private void setEvent() {

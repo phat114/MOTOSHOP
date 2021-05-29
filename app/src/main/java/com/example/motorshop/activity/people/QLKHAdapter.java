@@ -19,16 +19,17 @@ import com.example.motorshop.db.DBManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QLKHAdapter extends RecyclerView.Adapter<QLKHAdapter.ViewHolder> {
     Context context;
     int resource;
-    List<KhachHang> data;
+    ArrayList<KhachHang> data;
     RecyclerView rvDataKH;
     DBManager db = new DBManager(context);
 
-    public QLKHAdapter(Context context, int resource, List<KhachHang> data) {
+    public QLKHAdapter(Context context, int resource, ArrayList<KhachHang> data) {
         this.context = context;
         this.resource = resource;
         this.data = data;
@@ -90,7 +91,15 @@ public class QLKHAdapter extends RecyclerView.Adapter<QLKHAdapter.ViewHolder> {
                             context.startActivity(intentSuaNV);
                             break;
                         case R.id.mnXoaKH:
-
+                            int pos = getAdapterPosition();
+                            System.out.println("data size: " + data.size());
+                            System.out.println("id: " + data.get(pos).getCmnd());
+                            DBManager db = new DBManager(context.getApplicationContext());
+                            db.deleteCTM(data.get(pos).getCmnd());
+                            System.out.println("data size 2nd: " + data.size());
+//                            db.loadSTList(data);
+                            db.loadAllCTMList();
+                            ((QLKHActivity)context).loadQLKH();
                             break;
                     }
                     return false;

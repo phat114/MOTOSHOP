@@ -71,7 +71,7 @@ public class DepartmentAdapter extends ArrayAdapter<BoPhan> {
         tvDeleteDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DepartmentActivity)context).deleteDepartment(department);
+                //((DepartmentActivity)context).deleteDepartment(department);
                 notifyDataSetChanged();
                 ((DepartmentActivity)context).loadDepartment();
                 notifyDataSetChanged();

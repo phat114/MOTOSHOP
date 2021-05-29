@@ -20,16 +20,18 @@ import com.example.motorshop.db.DBManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class QLBPAdapter extends RecyclerView.Adapter<QLBPAdapter.ViewHolder> {
     Context context;
     int resource;
-    List<BoPhan> data;
+    ArrayList<BoPhan> data;
     RecyclerView rvDataBP;
     DBManager db = new DBManager(context);
 
-    public QLBPAdapter(Context context, int resource, List<BoPhan> data) {
+    public QLBPAdapter(Context context, int resource, ArrayList<BoPhan> data) {
         this.context = context;
         this.resource = resource;
         this.data = data;
@@ -89,8 +91,17 @@ public class QLBPAdapter extends RecyclerView.Adapter<QLBPAdapter.ViewHolder> {
                             context.startActivity(intentSuaBP);
                             break;
                         case R.id.mnXoaBP:
-
+                            int pos = getAdapterPosition();
+                            System.out.println("data size: " + data.size());
+                            System.out.println("id: " + data.get(pos).getMaBP());
+                            DBManager db = new DBManager(context.getApplicationContext());
+                            db.deleteDP(data.get(pos).getMaBP());
+                            System.out.println("data size 2nd: " + data.size());
+//                            db.loadSTList(data);
+                            db.loadAllDPList();
+                            ((QLBPActivity)context).loadQLBP();
                             break;
+
                     }
                     return false;
                 }

@@ -1,8 +1,6 @@
 package com.example.motorshop.activity.people;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,30 +41,39 @@ public class QLNVActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_nhanvien);
         setControl();
-        /*db.create();*/
+        db.create();
         setEvent();
+
     }
     public void loadQLNV(){
         dataNV = db.loadAllSTList();
+        db.loadSTList(dataNV);
         qlnvAdapter = new QLNVAdapter(this, R.layout.item_nhanvien, dataNV);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvDataNV.setLayoutManager(mLayoutManager);
         rvDataNV.setAdapter(qlnvAdapter);
-        }
-
-    public void deleteQLNV(NhanVien nhanVien){
-        this.nhanVien = nhanVien;
-        nhanVien.setMaNV(tvdtHoTen.getText().toString().trim());
-        nhanVien.setHoTen(tvdtHoTen.getText().toString().trim());
-        nhanVien.setSdt(tvdtSDT.getText().toString().trim());
-        nhanVien.setMaBP(tvdtBP.getText().toString().trim());
-        new DBManager(QLNVActivity.this).deleteST(nhanVien);
     }
 
+   /* public void deleteQLNV(NhanVien nhanVien, int pos){
+        this.nhanVien = nhanVien;
+       *//* nhanVien.setMaNV(tvdtHoTen.getText().toString().trim());
+        nhanVien.setHoTen(tvdtHoTen.getText().toString().trim());
+        nhanVien.setSdt(tvdtSDT.getText().toString().trim());
+        nhanVien.setMaBP(tvdtBP.getText().toString().trim());*//*
+       // dataNV.get(pos).setMaNV(tvdtMa.getText().toString().trim());
+        dataNV.get(pos).setHoTen(tvdtHoTen.getText().toString().trim());
+        dataNV.get(pos).setSdt(tvdtSDT.getText().toString().trim());
+        dataNV.get(pos).setMaBP(tvdtBP.getText().toString().trim());
+        db.deleteST(pos,nhanVien);
+        dataNV.remove(pos);
+        loadQLNV();
+    }
+*/
 
 
     private void setEvent() {
         loadQLNV();
+
     }
     private void setControl() {
         tvdtHoTen = findViewById(R.id.tvdtHoTen);

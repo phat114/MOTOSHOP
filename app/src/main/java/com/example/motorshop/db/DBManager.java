@@ -19,7 +19,7 @@ public class DBManager extends SQLiteOpenHelper {
     private static final String TAG = "DBManager";
 
     public DBManager(Context context) {
-        super(context, "dbMOTORSTORE.db", null, 1);
+        super(context, "dbMOTORSTORE.db", null, 2);
         Log.d(TAG,"Create DB: ");
     }
 
@@ -28,7 +28,7 @@ public class DBManager extends SQLiteOpenHelper {
         ArrayList<String> createTables = new ArrayList<>();
         createTables.add("CREATE TABLE IF NOT EXISTS BOPHAN (MABP text PRIMARY KEY, TENBP text not null)");
         createTables.add("CREATE TABLE IF NOT EXISTS NHANVIEN(MANV text PRIMARY KEY, HOTEN text not null, SDT text not null, MABP text not null, CONSTRAINT FK_NHANVIEN_BOPHAN FOREIGN KEY (MABP) REFERENCES BOPHAN(MABP))");
-        createTables.add("CREATE TABLE IF NOT EXISTS KHACHHANG(CMND text PRIMARY KEY, HOTENKH text not null,DIACHIKH text not null,SDTKH text null)");
+        createTables.add("CREATE TABLE IF NOT EXISTS KHACHHANG(CMND text PRIMARY KEY, HOTENKH text not null,DIACHIKH text not null,SDTKH text null, PASSKH text not null)");
         //createTables.add("CREATE TABLE IF NOT EXISTS KHACHHANG (CMND text PRIMARY KEY, HOTENKH text not null, DIACHIKH text not null, SDTKH text null)");
         createTables.add("CREATE TABLE IF NOT EXISTS NHACUNGCAP (MANCC text PRIMARY KEY, TENNCC text not null, DIACHI text not null, SDT text not null, EMAIL text null, LOGO int not null)");
         createTables.add("CREATE TABLE IF NOT EXISTS XE (MAXE text PRIMARY KEY, TENXE text not null, SOLUONG int not null, DONGIA int not null, HANBAOHANH int not null, HINHANH int not null, MANCC text not null, CONSTRAINT FK_XE_NHACUNGCAP FOREIGN KEY (MANCC) REFERENCES NHACUNGCAP(MANCC))");
@@ -98,13 +98,13 @@ public class DBManager extends SQLiteOpenHelper {
         Log.d(TAG,"Update DEPARTMENT: ");
     }
 
-    public void deleteDP(BoPhan department){
+  /*  public void deleteDP(BoPhan department){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM BOPHAN WHERE MABP = '" + department.getMaBP() + "'";
         db.execSQL(query);
         db.close();
         Log.d(TAG,"Delete DEPARTMENT: ");
-    }
+    }*/
 
     public void deleteDP(String departmentID){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -169,6 +169,8 @@ public class DBManager extends SQLiteOpenHelper {
     }
     public void create(){
         insertST(new NhanVien("NV02", "Nguyen Thinh", "0123456789", "PT122"));
+        insertST(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
+        insertST(new NhanVien("NV03", "Le Diem Quynh ", "0877269539", "PT021"));
         Log.d(TAG,"Insert Nhan Vien thanh cong");
     }
     public void updateST(NhanVien nhanVien) {
@@ -180,9 +182,9 @@ public class DBManager extends SQLiteOpenHelper {
         sql += "WHERE MANV = '"+nhanVien.getMaNV()+"'";
         db.execSQL(sql);
     }
-    public void deleteST(NhanVien nhanVien) {
+    public void deleteST(String maNV) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM NHANVIEN WHERE MANV='" + nhanVien.getMaNV()+"'";
+        String query = "DELETE FROM NHANVIEN WHERE MANV='" + maNV+"'";
         db.execSQL(query);
         db.close();
         Log.d("data","Delete Nhan Vien");
@@ -229,8 +231,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void createCTM(){
 //        insertST(new NhanVien("NV01", "Nguyen Thinh Phat", "0877269539", "PT123"));
-        insertCTM(new KhachHang("1212121", "Nguyen Thinh", "0123456789", "01212"));
-        insertCTM(new KhachHang("1324234", "Nguyen Thinh Phat", "0123456789", "12131"));
+        insertCTM(new KhachHang("1212121", "Nguyen Thinh", "0123456789", "01212","phatphuphang"));
+        insertCTM(new KhachHang("1324234", "Nguyen Thinh Phat", "0123456789", "12131","alo123"));
         Log.d(TAG,"Insert Khach hang thanh cong");
     }
     public void insertCTM(KhachHang khachHang) {
@@ -240,6 +242,7 @@ public class DBManager extends SQLiteOpenHelper {
         values.put("HOTENKH",khachHang.getHoTen());
         values.put("DIACHIKH",khachHang.getDiaChi());
         values.put("SDTKH",khachHang.getSdt());
+        values.put("PASSKH",khachHang.getPassKH());
         db.insert("KhachHang",null,values);
         db.close();
         Log.d(TAG,"Insert Khach Hang");
@@ -250,12 +253,14 @@ public class DBManager extends SQLiteOpenHelper {
         sql += "HOTENKH"+khachHang.getHoTen()+"', ";
         sql += "DIACHIKH"+khachHang.getDiaChi()+"', ";
         sql += "SDTKH"+khachHang.getSdt()+"', ";
+        sql += "PASSKH"+khachHang.getPassKH()+"', ";
         sql += "WHERE CMND = '"+khachHang.getCmnd()+"'";
         db.execSQL(sql);
     }
-    public void deleteCTM(KhachHang khachHang) {
+
+    public void deleteCTM(String cmnd) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM KHACHHANG WHERE CMND='" + khachHang.getCmnd()+"'";
+        String query = "DELETE FROM KHACHHANG WHERE CMND='" + cmnd+"'";
         db.execSQL(query);
         db.close();
         Log.d("data","Delete Khach Hang");
@@ -273,6 +278,7 @@ public class DBManager extends SQLiteOpenHelper {
                 khachHang.setHoTen(cursor.getString(1));
                 khachHang.setDiaChi(cursor.getString(2));
                 khachHang.setSdt(cursor.getString(3));
+                khachHang.setPassKH(cursor.getString(4));
                 data.add(khachHang);
             }while (cursor.moveToNext());
         }
@@ -329,7 +335,6 @@ public class DBManager extends SQLiteOpenHelper {
     public void loadBRList(ArrayList<NhaCungCap> brandList){
         brandList.clear();
         SQLiteDatabase db = this.getReadableDatabase();
-
         String query = "SELECT * FROM NHACUNGCAP";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {

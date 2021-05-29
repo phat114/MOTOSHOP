@@ -6,14 +6,24 @@ public class KhachHang {
     private String hoTen;
     private String diaChi;
     private String sdt;
+    private String passKH;
 
     public KhachHang() { }
 
-    public KhachHang(String cmnd, String hoTen, String diaChi, String sdt) {
+    public String getPassKH() {
+        return passKH;
+    }
+
+    public void setPassKH(String passKH) {
+        this.passKH = passKH;
+    }
+
+    public KhachHang(String cmnd, String hoTen, String diaChi, String sdt, String passKH) {
         this.cmnd = cmnd;
         this.hoTen = hoTen;
         this.diaChi = diaChi;
         this.sdt = sdt;
+        this.passKH = passKH;
     }
 
     public String getCmnd() {

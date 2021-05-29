@@ -100,6 +100,7 @@ public class DepartmentActivity extends AppCompatActivity {
             new DBManager(DepartmentActivity.this).updateDP(department);
         }
     }
+/*
 
     public void deleteDepartment(BoPhan department){
         this.department = department;
@@ -107,6 +108,7 @@ public class DepartmentActivity extends AppCompatActivity {
         department.setTenBP(etDPName.getText().toString().trim());
         new DBManager(DepartmentActivity.this).deleteDP(department);
     }
+*/
 
     public void loadDepartment(){
         new DBManager(DepartmentActivity.this).loadDPList(data);

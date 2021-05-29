@@ -35,6 +35,7 @@ public class QLBPActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bophan);
         setControl();
+        db.createDP();
         setEvent();
 
     }

@@ -104,7 +104,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDataKH"
             android:layout_width="match_parent"
-            android:layout_height="283dp"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="370dp"></androidx.recyclerview.widget.RecyclerView>
     </TableLayout>
 
     <!--<Button
@@ -122,7 +122,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal">
 
         <ImageButton
